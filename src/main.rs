@@ -1,10 +1,10 @@
 use ggez::conf::WindowMode;
 use ggez::event;
 use ggez::glam::*;
-use ggez::graphics::DrawMode;
+/* use ggez::graphics::DrawMode; */
 use ggez::graphics::DrawParam;
-use ggez::graphics::Mesh;
-use ggez::graphics::Rect;
+// use ggez::graphics::Mesh;
+// use ggez::graphics::Rect;
 use ggez::graphics::{self, Color};
 use ggez::{Context, GameResult};
 use rand::Rng;
@@ -38,12 +38,22 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
         let mut canvas = graphics::Canvas::from_frame(ctx, graphics::Color::BLACK);
+        let mut color = 255;
 
         for (x, y) in &self.v {
-            println!("maikati: {}", x);
+            // let mut i = 0;
+            //
+            // println!("maikati: {}", *x);
             for (x1, y1) in &self.v {
-                if x1 != x && y1 != y && dist(*x as f64, *x1 as f64, *y as f64, *y1 as f64) <= 80.0
+                //     if i < self.v.len() - 1 {
+                //         i += 1;
+                //     } else {
+                //         i = 0;
+                //     }
+
+                if x1 != x && y1 != y && dist(*x as f64, *x1 as f64, *y as f64, *y1 as f64) <= 100.0
                 {
+                    color -= 1;
                     let _line = graphics::Mesh::new_line(
                         ctx,
                         &[
@@ -51,7 +61,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
                             Vec2::new(*x1 as f32, *y1 as f32),
                         ],
                         1.0,
-                        Color::RED,
+                        Color::from_rgb((color as u8) / 2, (color as u8) / 1 / 5, (color as u8)),
                     );
                     canvas.draw(&_line.unwrap(), DrawParam::default());
                 }
